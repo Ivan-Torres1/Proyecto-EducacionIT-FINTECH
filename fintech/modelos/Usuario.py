@@ -1,4 +1,4 @@
-from fintech.modelos.cuentaBancaria import CuentaBancaria
+from modelos.cuentaBancaria import CuentaBancaria
 
 
 class Usuario:
@@ -37,6 +37,8 @@ class Usuario:
         cuenta = CuentaBancaria.crearDesdeUsuario(self,titular=self.nombre+self.apellido)
         self.__cuentas.append(cuenta)
         print(f"{self.nombre} su cuenta fue creada correctamente")
+        print("DATOS DE LA CUENTA")
+        print(cuenta)
 
     def mostrarCuentas(self):
         for cuenta in self.__cuentas:

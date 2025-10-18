@@ -1,4 +1,4 @@
-from fintech.modelos import Movimiento
+from modelos.Movimiento import Movimiento
 
 
 class CuentaBancaria:
@@ -48,9 +48,10 @@ class CuentaBancaria:
     def retirar(self,monto: int):
         if monto > 0 and monto <= self.__saldo:
             self.saldo = self.__saldo - monto
-            print(f"\nSe retiraron {monto} de su cuenta")
-            print(f"Dinero actual en su cuenta {self.saldo}\n")
-            self.registrarMovimiento("retirar",monto)
+            print("OPERACIÓN: RETIRAR")
+            print(f"Se retiraron {monto} de su cuenta")
+            print(f"Dinero actual en su cuenta: {self.saldo}\n")
+            self.registrarMovimiento("Retirar",monto)
         else:
             raise ValueError("El monto es negativo o mayor a su saldo actual")
 
@@ -58,14 +59,14 @@ class CuentaBancaria:
     def depositar(self,monto: int):
         if monto > 0:
             self.saldo += monto
-            print("\nOperación exitosa")
-            print(f"Saldo actual {self.saldo}\n")
-            self.registrarMovimiento("depositar",monto)
+            print("OPERACIÓN: DEPOSITAR")
+            print(f"Operación exitosa, se depositarón {self.saldo}")
+            self.registrarMovimiento("Depositar",monto)
+
 
     def registrarMovimiento(self, tipo, monto):
         mov = Movimiento(tipo,monto)
         self.__movimiento.append(mov)
 
 
-    
    

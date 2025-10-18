@@ -9,3 +9,5 @@ class Movimiento:
 
     def __str__(self):
         return f"[{self.fecha.strftime('%Y-%m-%d %H:%M')}] Tipo: {self.tipo}, Monto: ${self.monto:.2f}"
+    
+
