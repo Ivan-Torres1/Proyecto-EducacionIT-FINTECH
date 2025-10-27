@@ -1,72 +1,53 @@
-from modelos.Movimiento import Movimiento
+from typing import Optional
+# from sqlmodel import SQLModel, Field, Relationship,Session
+from sqlmodel import SQLModel,Field,Relationship,Session
+from fintech.modelos.Movimiento import Movimientos
+from datetime import datetime
+from fintech.utils.helpModels import encontrarUserConDNI
 
 
-class CuentaBancaria:
-    cuentaId = 0
-    def __init__(self,usuarioAsociado:str,titular,saldo=0):
-        CuentaBancaria.cuentaId += 1
-        self._id = CuentaBancaria.cuentaId
-        self.titular = titular
-        self.__saldo = saldo
-        self._usuarioAsociado = usuarioAsociado
-        self.__movimiento = []
-
-    @classmethod          
-    def crearDesdeUsuario(cls,usuario,titular,saldo=0):
-        return cls(usuario,titular,saldo)
-
-    @property
-    def saldo(self):
-        if self.__saldo >= 0:
-            return self.__saldo
-        else:
-            raise ValueError("El saldo no puede ser negativo")
-        
-    @saldo.setter
-    def saldo(self,nuevoSaldo: int):
-        if nuevoSaldo > 0:
-            self.__saldo = nuevoSaldo
-        else:
-            raise ValueError("El saldo no puede ser negativo")
-    
-    @property
-    def movimientos(self):
-        return self.__movimiento.copy()
+class Cuentas(SQLModel,table=True):
+    __tablename__ = "cuentas"
+    id:Optional[int]= Field(default=None,primary_key=True)
+    usuarioId: int = Field(foreign_key="usuariomodel.id")
+    saldo: float = Field(default=0, ge=0)
+    usuario: "usuariomodel" = Relationship(back_populates="cuentas")
+    movimientos: "movimientos" = Relationship(back_populates="cuenta")
 
 
+    def depositar(self, monto: float, session: Session, descripcion: str = None):
+            if monto <= 0:
+                raise ValueError("El monto debe ser mayor que cero")
 
-    def __str__(self):
-        return f""" 
-    ---
-    {self._usuarioAsociado}
-    ID de cuenta: {self._id}
-    Titular: {self.titular}
-    Saldo actual: {self.saldo}
-    ---
-        """
-
-    def retirar(self,monto: int):
-        if monto > 0 and monto <= self.__saldo:
-            self.saldo = self.__saldo - monto
-            print("OPERACIÓN: RETIRAR")
-            print(f"Se retiraron {monto} de su cuenta")
-            print(f"Dinero actual en su cuenta: {self.saldo}\n")
-            self.registrarMovimiento("Retirar",monto)
-        else:
-            raise ValueError("El monto es negativo o mayor a su saldo actual")
-
-
-    def depositar(self,monto: int):
-        if monto > 0:
             self.saldo += monto
-            print("OPERACIÓN: DEPOSITAR")
-            print(f"Operación exitosa, se depositarón {self.saldo}")
-            self.registrarMovimiento("Depositar",monto)
+            movimiento = Movimientos(
+                cuenta_id=self.id,
+                tipo="deposito",
+                monto=monto,
+                fecha=datetime.utcnow(),
+                descripcion=descripcion
+            )
+            session.add(movimiento)
 
+    def retirar(self, monto: float, session: Session, descripcion: str = None):
+        if monto <= 0:
+            raise ValueError("El monto debe ser mayor que cero")
+        if self.saldo < monto:
+            raise ValueError("Saldo insuficiente")
 
-    def registrarMovimiento(self, tipo, monto):
-        mov = Movimiento(tipo,monto)
-        self.__movimiento.append(mov)
+        self.saldo -= monto
+        movimiento = Movimientos(
+            cuenta_id=self.id,
+            tipo="retiro",
+            monto=monto,
+            fecha=datetime.utcnow(),
+            descripcion=descripcion
+        )
+        session.add(movimiento)
 
+    def crearCuenta(self,session: Session,dniUser:int):
+        user = encontrarUserConDNI(dniUser,Session)
+        cuenta = Cuentas(usuarioId=user.id)
+        session.add(cuenta)
+    
 
-   

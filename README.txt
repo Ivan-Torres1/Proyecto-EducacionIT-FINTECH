@@ -31,4 +31,24 @@ El desarrollo se basa en **buenas prácticas de POO**, aplicando principios como
 ---
 
 
-
+mi_fintech/
+│
+├── main.py
+│
+├── mi_fintech/
+│   ├── __init__.py
+│   ├── database.py              # 🔹 configuración SQLAlchemy
+│   │
+│   ├── modelos/
+│   │   ├── __init__.py
+│   │   ├── usuario.py           # ahora hereda de Base (ORM)
+│   │   ├── cuenta_bancaria.py
+│   │   └── movimiento.py
+│   │
+│   ├── servicios/
+│   │   ├── __init__.py
+│   │   └── gestor_fintech.py    # usará sesiones de SQLAlchemy
+│   │
+│   └── utils/
+│       └── validaciones.py
+└── requirements.txt
