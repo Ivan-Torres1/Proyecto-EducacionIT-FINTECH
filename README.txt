@@ -37,18 +37,19 @@ mi_fintech/
 │
 ├── mi_fintech/
 │   ├── __init__.py
-│   ├── database.py              # 🔹 configuración SQLAlchemy
+│   ├── database.py            
 │   │
 │   ├── modelos/
 │   │   ├── __init__.py
-│   │   ├── usuario.py           # ahora hereda de Base (ORM)
+│   │   ├── usuario.py          
 │   │   ├── cuenta_bancaria.py
 │   │   └── movimiento.py
 │   │
 │   ├── servicios/
 │   │   ├── __init__.py
-│   │   └── gestor_fintech.py    # usará sesiones de SQLAlchemy
+│   │   └── En proceso..
 │   │
 │   └── utils/
 │       └── validaciones.py
+|       └── En proceso...  
 └── requirements.txt
