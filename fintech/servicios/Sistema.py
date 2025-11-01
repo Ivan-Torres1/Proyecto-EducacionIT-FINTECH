@@ -1,15 +1,12 @@
-from fintech.utils.database import engine
-from fintech.modelos.Usuario import UsuarioModel
-from fintech.modelos.cuentaBancaria import Cuentas
+from utils.database import engine
+from modelos.Usuario import UsuarioModel
+from modelos.cuentaBancaria import Cuentas
+from servicios.helpModels import encontrarUserConDNI,encontrarCuentasUsuario
 from sqlmodel import Session
 
 
 def logica():
-    with Session(engine) as session:
-        user = UsuarioModel()
-        user.crearUsuario(nombre="Jorge",apellido="Matt",contraseña="Max111",dni=47103884,mail="Jorge@gmail.com",session=session)
-        session.commit() 
+    # Donde ejecutamos la logica del codigo (donde pruebo los metodos y 
+    # funciones para saber que funcionan correctamente)
 
-        cuenta = Cuentas()
-        cuenta.crearCuenta(dniUser=47103883,session=session)
-        session.commit()
+    pass

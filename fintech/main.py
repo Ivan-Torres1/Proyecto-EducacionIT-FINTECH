@@ -1,9 +1,9 @@
 # python -m fintech.utils.main  
-from fintech.modelos.cuentaBancaria import Cuentas
-from fintech.modelos.Usuario import UsuarioModel
-from fintech.modelos.Movimiento import Movimientos
-from fintech.utils.database import createAll
-from fintech.servicios.Sistema import logica
+from modelos.cuentaBancaria import Cuentas
+from modelos.Usuario import UsuarioModel
+from modelos.Movimiento import Movimientos
+from utils.database import createAll
+from servicios.Sistema import logica
 
 
 if __name__ == "__main__":

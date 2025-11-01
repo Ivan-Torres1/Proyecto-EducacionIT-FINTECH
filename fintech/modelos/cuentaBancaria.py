@@ -1,18 +1,17 @@
 from typing import Optional
-# from sqlmodel import SQLModel, Field, Relationship,Session
 from sqlmodel import SQLModel,Field,Relationship,Session
-from fintech.modelos.Movimiento import Movimientos
 from datetime import datetime
-from fintech.utils.helpModels import encontrarUserConDNI
-
+from servicios.helpModels import encontrarUserConDNI
+from modelos.Movimiento import Movimientos
+from servicios.loggingConfig import log
 
 class Cuentas(SQLModel,table=True):
     __tablename__ = "cuentas"
     id:Optional[int]= Field(default=None,primary_key=True)
-    usuarioId: int = Field(foreign_key="usuariomodel.id")
+    usuarioId: Optional[int] = Field(foreign_key="usuariomodel.id")
     saldo: float = Field(default=0, ge=0)
-    usuario: "usuariomodel" = Relationship(back_populates="cuentas")
-    movimientos: "movimientos" = Relationship(back_populates="cuenta")
+    usuario: "UsuarioModel" = Relationship(back_populates="cuentas")
+    movimientos: "Movimientos" = Relationship(back_populates="cuenta")
 
 
     def depositar(self, monto: float, session: Session, descripcion: str = None):
@@ -46,8 +45,9 @@ class Cuentas(SQLModel,table=True):
         session.add(movimiento)
 
     def crearCuenta(self,session: Session,dniUser:int):
+        log("DEBUG","\nINTENTANDO CREAR LA CUENTA...")
         user = encontrarUserConDNI(dniUser,Session)
         cuenta = Cuentas(usuarioId=user.id)
         session.add(cuenta)
-    
+        log("INFO","Cuenta creada correctamente")
 

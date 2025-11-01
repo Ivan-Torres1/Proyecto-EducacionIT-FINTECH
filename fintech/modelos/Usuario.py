@@ -1,7 +1,7 @@
 from typing import Optional, List,Annotated
 from sqlmodel import SQLModel, Field, Relationship, Session
 from pydantic import EmailStr,Field as pydanticField,field_validator #Para validación que no sea de bbdd
-# from fintech.modelos.cuentaBancaria import Cuentas
+from servicios.loggingConfig import log
 
 
 
@@ -29,12 +29,23 @@ class UsuarioModel(SQLModel,table=True):
             raise ValueError("La contraseña debe tener al menos un número")
         return value
 
+    def __str__(self):
+        return f"""
+    Nombre: {self.nombre}
+    Apellido: {self.apellido}
+    Mail: {self.mail}
+    DNI: {self.dni}
+                """
 
-    def crearUsuario(self,session: Session,nombre: str,apellido: str,contraseña:str,mail: str,dni: int):
+
+
+
+    def crearUsuario(self,session: Session,nombre: str,apellido: str,contraseña:str,mail: str,dni: str):
+        log("DEBUG","INTENTANDO CREAR UN USUARIO...")
         user = UsuarioModel(nombre=nombre,apellido=apellido,
                 contraseña=contraseña,mail=mail,dni=dni)
         session.add(user)
-        print("¡Usuario creado correctamente!")
+        log("INFO","USUARIO CREADO CORRECTAMENTE") 
 
     
         
