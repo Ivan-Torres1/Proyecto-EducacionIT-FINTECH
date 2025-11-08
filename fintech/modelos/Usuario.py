@@ -38,8 +38,6 @@ class UsuarioModel(SQLModel,table=True):
                 """
 
 
-
-
     def crearUsuario(self,session: Session,nombre: str,apellido: str,contraseña:str,mail: str,dni: str):
         log("DEBUG","INTENTANDO CREAR UN USUARIO...")
         user = UsuarioModel(nombre=nombre,apellido=apellido,
@@ -49,24 +47,3 @@ class UsuarioModel(SQLModel,table=True):
 
     
         
-
-
-
-
-
-
-
-
-
-
-    # def crearCuenta(self):
-    #         titular = self.nombre+self.apellido
-    #         cuenta = CuentaBancaria.crearDesdeUsuario(self,titular=self.nombre+self.apellido)
-    #         self.__cuentas.append(cuenta)
-    #         print(f"{self.nombre} su cuenta fue creada correctamente")
-    #         print("DATOS DE LA CUENTA")
-    #         print(cuenta)
-
-    # def mostrarCuentas(self):
-    #     for cuenta in self.__cuentas:
-    #         print(cuenta)
